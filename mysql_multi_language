@@ -1,0 +1,54 @@
+SHOW DATABASES;
+
+CREATE DATABASE mysql_multi_language;
+
+USE mysql_multi_language
+
+SHOW TABLES;
+CREATE TABLE categories (
+	id INT AUTO_INCREMENT NOT NULL,
+	name VARCHAR(100) NOT NULL,
+	position INT NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE = InnoDB;
+
+DESCRIBE categories;
+
+INSERT INTO categories (name, position)
+	VALUES ('Gadget', 2);
+
+SELECT * FROM categories;
+
+CREATE TABLE categories_language (
+	category_id INT NOT NULL,
+	language VARCHAR(100),
+	name VARCHAR(100),
+	description VARCHAR(100),
+	PRIMARY KEY (category_id, language)
+) ENGINE InnoDB;
+
+ALTER TABLE categories_language
+	ADD CONSTRAINT fk_categories_language_id 
+		FOREIGN KEY (category_id) REFERENCES categories (id);
+
+DESCRIBE categories_language;
+
+INSERT INTO categories_language (category_id, language, name, description) 
+	VALUES 
+	(1, 'in_ID', 'Makanan', 'Deskripsi Makanan'),
+	(2, 'in_ID', 'Gawai', 'Deskripsi Gawai');
+			
+
+INSERT INTO categories_language (category_id, language, name, description) 
+	VALUES 
+	(1, 'en_EN', 'Food', 'Food Description'),
+	(2, 'en_EN', 'Gadget', 'Gadget Description');
+
+SELECT * FROM categories c
+	JOIN categories_language cl ON c.id = cl.category_id
+		WHERE cl.language = 'in_ID';
+
+
+SELECT * FROM categories c
+	JOIN categories_language cl ON c.id = cl.category_id
+		WHERE cl.language = 'en_EN';
